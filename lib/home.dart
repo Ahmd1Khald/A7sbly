@@ -39,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (savedDateString != null) {
       final savedDate = DateTime.parse(savedDateString);
       _selectedDate = savedDate;
+      _dateController.text =
+          "${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}";
       _startCountdown();
     }
   }
@@ -93,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now().subtract(const Duration(days: 1)),
-      lastDate: DateTime(2101),
+      lastDate: DateTime(2150),
     );
     if (pickedDate != null) {
       setState(() {
@@ -117,12 +119,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'احسبلي فاضل قد ايه',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/clock.png',
+              width: 25,
+            ),
+            const Text(
+              'احسبلي فاضل قد ايه',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 26,
+              ),
+            ),
+            Image.asset(
+              'assets/images/clock.png',
+              width: 25,
+            ),
+          ],
         ),
       ),
       body: Padding(
@@ -131,111 +146,113 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/background.png'),
-              opacity: 0.05,
+              opacity: 0.1,
             ),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'اختار التاريخ',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: _dateController,
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'اختار التاريخ',
                   textAlign: TextAlign.right,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 22,
+                    fontSize: 24,
                   ),
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(
-                      Icons.date_range,
-                      color: Colors.teal,
-                      size: 26,
-                    ),
-                  ),
-                  readOnly: true,
-                  onTap: () => _selectDate(context),
                 ),
-                const SizedBox(height: 45),
-                _daysLeftMessage.isEmpty
-                    ? MaterialButton(
-                        color: Colors.teal,
-                        height: 55,
-                        shape: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        onPressed: _startCountdown,
-                        child: const Text(
-                          'احسب',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 24,
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomContainer(
-                                color: Colors.green,
-                                text: _years,
-                                title: 'سنة',
-                              ),
-                              CustomContainer(
-                                color: Colors.red,
-                                text: _months,
-                                title: 'شهر',
-                              ),
-                              CustomContainer(
-                                color: Colors.blue,
-                                text: _weeks,
-                                title: 'أسبوع',
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomContainer(
-                                color: Colors.orange,
-                                text: _days,
-                                title: 'يوم',
-                              ),
-                              CustomContainer(
-                                color: Colors.teal,
-                                text: _hours,
-                                title: 'ساعة',
-                              ),
-                              CustomContainer(
-                                color: Colors.yellow,
-                                text: _minutes,
-                                title: 'دقيقة',
-                              ),
-                            ],
-                          ),
-                          CustomContainer(
-                            color: Colors.white,
-                            text: _seconds,
-                            title: 'ثانية',
-                          ),
-                        ],
+              ),
+              const SizedBox(height: 5),
+              TextField(
+                controller: _dateController,
+                enableSuggestions: true,
+                autocorrect: true,
+                cursorColor: Colors.teal,
+                cursorHeight: 20,
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+                decoration: const InputDecoration(
+                  suffixIcon: Icon(
+                    Icons.date_range,
+                    color: Colors.teal,
+                    size: 26,
+                  ),
+                ),
+                readOnly: true,
+                onTap: () => _selectDate(context),
+              ),
+              const SizedBox(height: 20),
+              _daysLeftMessage.isEmpty
+                  ? MaterialButton(
+                      color: Colors.teal,
+                      height: 55,
+                      shape: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
-              ],
-            ),
+                      onPressed: _startCountdown,
+                      child: const Text(
+                        'احسب',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        CustomContainer(
+                          color: Colors.white,
+                          text: _seconds,
+                          title: 'ثانية',
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomContainer(
+                              color: Colors.orange,
+                              text: _days,
+                              title: 'يوم',
+                            ),
+                            CustomContainer(
+                              color: Colors.teal,
+                              text: _hours,
+                              title: 'ساعة',
+                            ),
+                            CustomContainer(
+                              color: Colors.yellow,
+                              text: _minutes,
+                              title: 'دقيقة',
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomContainer(
+                              color: Colors.green,
+                              text: _years,
+                              title: 'سنة',
+                            ),
+                            CustomContainer(
+                              color: Colors.red,
+                              text: _months,
+                              title: 'شهر',
+                            ),
+                            CustomContainer(
+                              color: Colors.blue,
+                              text: _weeks,
+                              title: 'أسبوع',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+            ],
           ),
         ),
       ),
